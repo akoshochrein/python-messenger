@@ -40,22 +40,22 @@ class Bot(object):
                         pass
 
     def handle_optin(self, messaging_event):
-        pass
+        raise NotImplementedError
 
     def handle_message(self, messaging_event):
-        pass
+        raise NotImplementedError
 
     def handle_delivery(self, messaging_event):
-        pass
+        raise NotImplementedError
 
     def handle_postback(self, messaging_event):
-        pass
+        raise NotImplementedError
 
     def handle_read(self, messaging_event):
-        pass
+        raise NotImplementedError
 
     def handle_account_linking(self, messaging_event):
-        pass
+        raise NotImplementedError
 
     def _send(self, message_payload):
         requests.post(

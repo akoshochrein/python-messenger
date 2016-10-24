@@ -34,3 +34,7 @@ class TestBotClass(object):
         bot_fixture.process_message({'object': 'page', 'entry': [{'messaging': [{'message': 'test'}]}]})
         assert 1 == bot_fixture.handle_message.call_count
         assert {'message': 'test'} == bot_fixture.handle_message.call_args[0][0]
+
+    def test_not_implemented(self, bot_fixture):
+        with pytest.raises(NotImplementedError):
+            bot_fixture.process_message({'object': 'page', 'entry': [{'messaging': [{'optin': 'test'}]}]})

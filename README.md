@@ -1,5 +1,5 @@
 # python-messenger
-Messenger bot base class for python application
+Messenger bot base class for python applications
 
 ## Example
 

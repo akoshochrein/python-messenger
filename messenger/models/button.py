@@ -3,6 +3,7 @@
 BUTTON_TYPE_URL = 'web_url'
 BUTTON_TYPE_POSTBACK = 'postback'
 BUTTON_TYPE_PHONE_NUMBER = 'phone_number'
+BUTTON_TYPE_SHARE = 'element_share'
 
 
 class UrlButton(object):
@@ -49,4 +50,12 @@ class CallButton(object):
             'type': BUTTON_TYPE_PHONE_NUMBER,
             'title': self.title,
             'payload': self.phone_number
+        }
+
+
+class ShareButton(object):
+
+    def to_dict(self):
+        return {
+            'type': BUTTON_TYPE_SHARE
         }

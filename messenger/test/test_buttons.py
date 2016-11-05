@@ -1,7 +1,7 @@
 import pytest
 
-from messenger.models import CallButton, PostbackButton, UrlButton
-from messenger.models.button import BUTTON_TYPE_URL, BUTTON_TYPE_POSTBACK, BUTTON_TYPE_PHONE_NUMBER
+from messenger.models import CallButton, PostbackButton, ShareButton, UrlButton
+from messenger.models.button import BUTTON_TYPE_URL, BUTTON_TYPE_POSTBACK, BUTTON_TYPE_PHONE_NUMBER, BUTTON_TYPE_SHARE
 
 
 class TestUrlButton(object):
@@ -82,3 +82,13 @@ class TestCallButton(object):
     def test_create_failed_phone_number(self):
         with pytest.raises(AssertionError):
             CallButton(self.mock_title, 'not-a-phone-number')
+
+
+class TestShareButton(object):
+
+    def test_to_dict_success(self):
+        button = ShareButton()
+
+        button_dict = button.to_dict()
+
+        assert BUTTON_TYPE_SHARE == button_dict['type']

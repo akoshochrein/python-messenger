@@ -1,10 +1,12 @@
 import mock
 import pytest
 
-from messenger import Bot
+from messenger.const import ATTACHMENT_TYPE_IMAGE, ATTACHMENT_TYPE_VIDEO, ATTACHMENT_TYPE_FILE, ATTACHMENT_TYPE_AUDIO
+from messenger.models import Attachment, Bot
 
 
 class MockBot(Bot):
+
     def _send(self, message_payload):
         return message_payload
 
@@ -38,3 +40,31 @@ class TestBotClass(object):
     def test_not_implemented(self, bot_fixture):
         with pytest.raises(NotImplementedError):
             bot_fixture.process_message({'object': 'page', 'entry': [{'messaging': [{'optin': 'test'}]}]})
+
+
+class TestAttachmentClass(object):
+    mock_url = 'test://url.com'
+
+    def test_create_image_attachment_succeeds(self):
+        attachment = Attachment(ATTACHMENT_TYPE_IMAGE, self.mock_url)
+        assert ATTACHMENT_TYPE_IMAGE == attachment.typ
+        assert self.mock_url == attachment.url
+
+    def test_create_video_attachment_succeeds(self):
+        attachment = Attachment(ATTACHMENT_TYPE_VIDEO, self.mock_url)
+        assert ATTACHMENT_TYPE_VIDEO == attachment.typ
+        assert self.mock_url == attachment.url
+
+    def test_create_file_attachment_succeeds(self):
+        attachment = Attachment(ATTACHMENT_TYPE_FILE, self.mock_url)
+        assert ATTACHMENT_TYPE_FILE == attachment.typ
+        assert self.mock_url == attachment.url
+
+    def test_create_audio_attachment_succeeds(self):
+        attachment = Attachment(ATTACHMENT_TYPE_AUDIO, self.mock_url)
+        assert ATTACHMENT_TYPE_AUDIO == attachment.typ
+        assert self.mock_url == attachment.url
+
+    def test_validation_works(self):
+        with pytest.raises(AssertionError):
+            Attachment('invalid-attachment-type', self.mock_url)

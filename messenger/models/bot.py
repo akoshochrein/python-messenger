@@ -1,7 +1,8 @@
 import json
 import requests
 
-from .exceptions import InvalidMessageException
+from messenger.const import *
+from messenger.exceptions import InvalidMessageException
 
 
 class Bot(object):
@@ -20,21 +21,20 @@ class Bot(object):
         if not self._message_is_valid(data):
             raise InvalidMessageException
 
-        if 'page' == data.get('object'):
-            for page_entry in data.get('entry'):
-
-                for messaging_event in page_entry.get('messaging'):
-                    if messaging_event.get('optin'):
+        if OBJECT_PAGE == data.get(MESSAGE_DATA_OBJECT):
+            for page_entry in data.get(MESSAGE_DATA_ENTRY):
+                for messaging_event in page_entry.get(PAGE_ENTRY_MESSAGING):
+                    if messaging_event.get(EVENT_OPTIN):
                         self.handle_optin(messaging_event)
-                    elif messaging_event.get('message'):
+                    elif messaging_event.get(EVENT_MESSAGE):
                         self.handle_message(messaging_event)
-                    elif messaging_event.get('delivery'):
+                    elif messaging_event.get(EVENT_DELIVERY):
                         self.handle_delivery(messaging_event)
-                    elif messaging_event.get('postback'):
+                    elif messaging_event.get(EVENT_POSTBACK):
                         self.handle_postback(messaging_event)
-                    elif messaging_event.get('read'):
+                    elif messaging_event.get(EVENT_READ):
                         self.handle_read(messaging_event)
-                    elif messaging_event.get('account_linking'):
+                    elif messaging_event.get(EVENT_ACCOUNT_LINKING):
                         self.handle_account_linking(messaging_event)
                     else:
                         pass
@@ -67,7 +67,7 @@ class Bot(object):
         )
 
     def send_text_message(self, recipient_id, text):
-        message_data = {
+        message_payload = {
             'recipient': {
                 'id': recipient_id
             },
@@ -75,4 +75,27 @@ class Bot(object):
                 'text': text
             }
         }
-        self._send(message_data)
+        self._send(message_payload)
+
+    def send_text_message_with_attachment(self, recipient_id, text, attachment):
+        message_payload = {
+            'recipient': {
+                'id': recipient_id
+            },
+            'message': {
+                'text': text,
+                'attachment': attachment.to_dict()
+            }
+        }
+        self._send(message_payload)
+
+    def send_attachment(self, recipient_id, attachment):
+        message_payload = {
+            'recipient': {
+                'id': recipient_id
+            },
+            'message': {
+                attachment: attachment.to_dict()
+            }
+        }
+        self._send(message_payload)

@@ -109,3 +109,4 @@ class Bot(object):
                 'attachment': template.to_dict()
             }
         }
+        self._send(message_payload)

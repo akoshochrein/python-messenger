@@ -1,0 +1,5 @@
+
+
+
+class GenericTemplate(object):
+    pass

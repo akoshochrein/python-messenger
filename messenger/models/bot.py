@@ -95,7 +95,17 @@ class Bot(object):
                 'id': recipient_id
             },
             'message': {
-                attachment: attachment.to_dict()
+                'attachment': attachment.to_dict()
             }
         }
         self._send(message_payload)
+
+    def send_generic_template(self, recipient_id, template):
+        message_payload = {
+            'recipient': {
+                'id': recipient_id
+            },
+            'message': {
+                'attachment': template.to_dict()
+            }
+        }

@@ -119,3 +119,14 @@ class Bot(object):
             'sender_action': sender_action
         }
         self._send(message_payload)
+
+    def send_quick_reply(self, recipient_id, quick_replies=None):
+        message_payload = {
+            'recipient': {
+                'id': recipient_id
+            },
+            'quick_replies': [
+                qr.to_dict() for qr in quick_replies
+            ]
+        }
+        self._send(message_payload)

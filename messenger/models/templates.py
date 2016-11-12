@@ -1,4 +1,6 @@
 
+TEMPLATE_TYPE_GENERIC = 'generic'
+
 
 class TemplateElement(object):
 
@@ -39,9 +41,31 @@ class GenericTemplate(object):
         return {
             'type': 'template',
             'payload': {
-                'template_type': 'generic',
+                'template_type': TEMPLATE_TYPE_GENERIC,
                 'elements': [
                     e.to_dict() for e in self.elements
                 ]
             }
         }
+
+
+class ButtonTemplate(object):
+
+    def __init__(self, text, buttons):
+        self.text = text
+        self.buttons = buttons
+
+    def to_dict(self):
+        return {
+            'type': 'template',
+            'payload': {
+                'template_type': 'button',
+                'text': self.text,
+                'buttons': [
+                    b.to_dict() for b in self.buttons
+                ]
+            }
+        }
+
+
+

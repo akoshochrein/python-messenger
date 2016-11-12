@@ -1,5 +1,6 @@
 
 QUICK_REPLY_CONTENT_TYPE_TEXT = 'text'
+QUICK_REPLY_CONTENT_TYPE_LOCATION = 'location'
 
 
 class QuickTextReply(object):
@@ -33,4 +34,12 @@ class QuickTextAndImageReply(object):
             'title': self.title,
             'image_url': self.image_url,
             'payload': self.payload
+        }
+
+
+class QuickLocationReply(object):
+
+    def to_dict(self):
+        return {
+            'content_type': QUICK_REPLY_CONTENT_TYPE_LOCATION
         }

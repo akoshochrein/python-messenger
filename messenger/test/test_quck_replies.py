@@ -1,7 +1,7 @@
 import pytest
 
-from messenger.models import QuickTextAndImageReply, QuickTextReply
-from messenger.models.quick_replies import QUICK_REPLY_CONTENT_TYPE_TEXT
+from messenger.models import QuickLocationReply, QuickTextAndImageReply, QuickTextReply
+from messenger.models.quick_replies import QUICK_REPLY_CONTENT_TYPE_TEXT, QUICK_REPLY_CONTENT_TYPE_LOCATION
 
 
 class TestQuickTextReply(object):
@@ -61,3 +61,13 @@ class TestQuickTextAndImageReply(object):
     def test_create_failed_payload(self):
         with pytest.raises(AssertionError):
             QuickTextAndImageReply(self.mock_title, self.mock_image_url, '#' * 1001)
+
+
+class TestQuickLocationReply(object):
+
+    def test_to_dict(self):
+        qlr = QuickLocationReply()
+
+        qlr_dict = qlr.to_dict()
+
+        assert QUICK_REPLY_CONTENT_TYPE_LOCATION == qlr_dict['content_type']

@@ -1,8 +1,8 @@
 import pytest
 
-from messenger.models import GenericTemplate, TemplateElement
+from messenger.models import ButtonTemplate, GenericTemplate, TemplateElement
 from messenger.models.button import UrlButton
-from messenger.models.templates import TEMPLATE_TYPE_GENERIC
+from messenger.models.templates import TEMPLATE_TYPE_GENERIC, TEMPLATE_TYPE_BUTTON
 
 
 class TestElement(object):
@@ -153,3 +153,72 @@ class TestGenericTemplate(object):
         assert 2 == len(gt_dict['payload']['elements'])
         assert self.mock_first_element_title == gt_dict['payload']['elements'][0]['title']
         assert self.mock_second_element_title == gt_dict['payload']['elements'][1]['title']
+
+
+class TestButtonTemplate(object):
+    mock_template_text = 'mock-template-text'
+    mock_first_button_title = 'mock-1-btn-title'
+    mock_second_button_title = 'mock-2-btn-title'
+    mock_first_button_url = 'mock-1-button-url'
+    mock_second_button_url = 'mock-2-button-url'
+
+    def test_create_minimal(self):
+        bt = ButtonTemplate(text=self.mock_template_text, buttons=[])
+
+        assert self.mock_template_text == bt.text
+        assert 0 == len(bt.buttons)
+
+    def test_to_dict_minimal(self):
+        bt = ButtonTemplate(text=self.mock_template_text, buttons=[])
+
+        bt_dict = bt.to_dict()
+
+        assert 'template' == bt_dict['type']
+        assert bt_dict['payload'] is not None
+        assert TEMPLATE_TYPE_BUTTON == bt_dict['payload']['template_type']
+        assert self.mock_template_text == bt_dict['payload']['text']
+        assert 0 == len(bt_dict['payload']['buttons'])
+
+    def test_create_single_button(self):
+        bt = ButtonTemplate(text=self.mock_template_text, buttons=[
+            UrlButton(self.mock_first_button_title, self.mock_first_button_url)
+        ])
+
+        assert self.mock_template_text == bt.text
+        assert 1 == len(bt.buttons)
+
+    def test_to_dict_single_button(self):
+        bt = ButtonTemplate(text=self.mock_template_text, buttons=[
+            UrlButton(self.mock_first_button_title, self.mock_first_button_url)
+        ])
+
+        bt_dict = bt.to_dict()
+
+        assert self.mock_template_text == bt_dict['payload']['text']
+        assert 1 == len(bt_dict['payload']['buttons'])
+        assert self.mock_first_button_title == bt_dict['payload']['buttons'][0]['title']
+        assert self.mock_first_button_url == bt_dict['payload']['buttons'][0]['url']
+
+    def test_create_multiple_buttons(self):
+        bt = ButtonTemplate(text=self.mock_template_text, buttons=[
+            UrlButton(self.mock_first_button_title, self.mock_first_button_url),
+            UrlButton(self.mock_second_button_title, self.mock_second_button_url)
+        ])
+
+        assert self.mock_template_text == bt.text
+        assert 2 == len(bt.buttons)
+
+    def test_to_dict_multiple_buttons(self):
+        bt = ButtonTemplate(text=self.mock_template_text, buttons=[
+            UrlButton(self.mock_first_button_title, self.mock_first_button_url),
+            UrlButton(self.mock_second_button_title, self.mock_second_button_url)
+        ])
+
+        bt_dict = bt.to_dict()
+
+        assert self.mock_template_text == bt_dict['payload']['text']
+        assert 2 == len(bt_dict['payload']['buttons'])
+        assert self.mock_first_button_title == bt_dict['payload']['buttons'][0]['title']
+        assert self.mock_first_button_url == bt_dict['payload']['buttons'][0]['url']
+        assert self.mock_second_button_title == bt_dict['payload']['buttons'][1]['title']
+        assert self.mock_second_button_url == bt_dict['payload']['buttons'][1]['url']

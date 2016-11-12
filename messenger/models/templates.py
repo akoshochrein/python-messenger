@@ -1,4 +1,5 @@
 
+TEMPLATE_TYPE_BUTTON = 'button'
 TEMPLATE_TYPE_GENERIC = 'generic'
 
 
@@ -59,13 +60,10 @@ class ButtonTemplate(object):
         return {
             'type': 'template',
             'payload': {
-                'template_type': 'button',
+                'template_type': TEMPLATE_TYPE_BUTTON,
                 'text': self.text,
                 'buttons': [
                     b.to_dict() for b in self.buttons
                 ]
             }
         }
-
-
-

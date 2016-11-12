@@ -110,3 +110,12 @@ class Bot(object):
             }
         }
         self._send(message_payload)
+
+    def send_sender_action(self, recipient_id, sender_action):
+        message_payload = {
+            'recipient': {
+                'id': recipient_id
+            },
+            'sender_action': sender_action
+        }
+        self._send(message_payload)

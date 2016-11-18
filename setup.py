@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='python-messenger',
-    packages=['python-messenger'],
+    packages=['messenger'],
     version='0.1',
     description='Bot class for Facebook Messenger',
     author='Akos Hochrein',
